@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
 type User = {
   id: number;
@@ -45,12 +45,9 @@ export default function Dashboard() {
    */
   const filteredUsers = useMemo(() => {
     console.log("Filtering users...");
-    const term = search.toLowerCase().trim();
-    if (!term) return usersData;
 
     return usersData.filter((user) =>
-      //user.name.toLowerCase().includes(search.toLowerCase())
-      user.name.toLowerCase() === `user ${term}`
+      user.name.toLowerCase().includes(search.toLowerCase())
     );
   }, [search]);
 
@@ -79,13 +76,13 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-800 font-sans antialiased p-4 md:p-8">
+    <div className="min-h-screen bg-[#eae6f3] text-gray-800 font-sans antialiased p-4 md:p-8">
       {/* Main Container: Sets up a 3-column grid structure on medium screens and up */}
       <div className="mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
         {/* =========================================================
             SIDEBAR: Users List (Takes 1 column width on md+)
            ========================================================= */}
-        <aside className="md:col-span-1 bg-white p-5 rounded-2xl shadow-sm border border-gray-200 flex flex-col h-[450px] md:h-[calc(100vh-4rem)] sticky top-8">
+        <aside className="md:col-span-1 bg-[#0f3d59]/40 p-5 rounded-2xl shadow-sm border border-gray-200 flex flex-col h-112.5 md:h-[calc(100vh-4rem)] md:sticky md:top-8">
           <h2 className="text-xl font-bold mb-4 text-gray-900 tracking-tight">
             Users
           </h2>
@@ -95,17 +92,37 @@ export default function Dashboard() {
             <input
               type="text"
               placeholder="Search user..."
-              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl outline-none text-sm placeholder-gray-400 transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
           </div>
 
           {/* Smooth Scrollable Container for User Items */}
           <div className="overflow-y-auto flex-1 pr-1 space-y-1.5 scrollbar-thin scrollbar-thumb-gray-200">
-            {filteredUsers.map((user) => (
-              <UserCard key={user.id} user={user} onSelect={handleSelectUser} isSelected = {selectedUser?.id === user.id} />
-            ))}
+            {filteredUsers.length > 0 ? (
+              filteredUsers.map((user) => (
+                <UserCard
+                  key={user.id}
+                  user={user}
+                  onSelect={handleSelectUser}
+                  isSelected={selectedUser?.id === user.id}
+                />
+              ))
+            ) : (
+              <div className="flex flex-col items-center justify-center py-10 text-center">
+                <p className="text-sm font-medium text-gray-700">
+                  No users found
+                </p>
+
+                <p className="text-xs text-gray-500 mt-1">
+                  Try searching with another name
+                </p>
+              </div>
+            )}
           </div>
         </aside>
 
@@ -114,7 +131,7 @@ export default function Dashboard() {
            ========================================================= */}
         <main className="md:col-span-2 space-y-6">
           {/* Dashboard Header Banner */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 flex items-center justify-between">
+          <div className=" p-6 rounded-2xl shadow-sm border border-gray-200 flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
                 Dashboard
@@ -128,11 +145,11 @@ export default function Dashboard() {
           {/* Stats & Actions Grid Layout */}
           <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
             {/* Counter Card Component */}
-            <section className="sm:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center justify-center text-center group hover:shadow-md transition-shadow duration-300">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-400">
+            <section className="sm:col-span-2 bg-linear-to-br from-[#ffd3b6] to-[#ffa384] p-6 rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center justify-center text-center group hover:shadow-md transition-shadow duration-300">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-black-400">
                 Counter
               </h3>
-              <p className="text-5xl font-black text-gray-900 my-4 tracking-tight">
+              <p className="text-6xl font-black bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent my-4">
                 {count}
               </p>
               <button
@@ -144,44 +161,49 @@ export default function Dashboard() {
             </section>
 
             {/* Selected User Overview Card */}
-            <section className="sm:col-span-3 bg-white p-6 rounded-2xl shadow-sm border border-gray-200 flex flex-col justify-between group hover:shadow-md transition-shadow duration-300">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-4">
+            <section className="sm:col-span-3 bg-[#c2b6da] p-6 rounded-2xl shadow-sm border border-gray-200 flex flex-col justify-between group hover:shadow-md transition-shadow duration-300">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#4c3a6f] mb-4">
                 Selected Status
               </h3>
 
               {selectedUser ? (
                 /* Clean Gray Box Highlighted Area for Selected User Profile */
-                <div className="bg-gray-50 border border-gray-100 p-4 rounded-xl space-y-3 transition-all duration-300">
+                <div className="bg-[#decff5] border-[#4c3a6f] text-[#4c3a6f] p-4 rounded-xl space-y-3 transition-all duration-300">
                   <div className="flex items-center gap-3 text-sm">
-                    <span className="font-semibold text-gray-400 w-14 uppercase text-[11px] tracking-wider">
+                    <span className="font-semibold  w-14 uppercase text-[11px] tracking-wider">
                       Name:
                     </span>
-                    <span className="font-semibold text-gray-800">
+                    <span className="font-semibold ">
                       {selectedUser.name}
                     </span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
-                    <span className="font-semibold text-gray-400 w-14 uppercase text-[11px] tracking-wider">
+                    <span className="font-semibold  w-14 uppercase text-[11px] tracking-wider">
                       Age:
                     </span>
-                    <span className="font-medium text-gray-700 bg-gray-200/60 px-2 py-0.5 rounded text-xs">
+                    <span className="font-medium bg-gray-200/60 px-2 py-0.5 rounded text-xs">
                       {selectedUser.age} years old
                     </span>
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center py-6 my-auto">
-                  <p className="text-sm text-gray-400 italic">
-                    No active user selection
-                  </p>
+                <div className="flex flex-col items-center justify-center py-8 text-center">
+                  <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+                    <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                  <p className="text-sm text-[#2b1f45]">No active user selection</p>
+                  <p className="text-xs text-[#65538e] mt-1">Click any user to view details</p>
                 </div>
+
               )}
             </section>
           </div>
 
           {/* Analytics Modular Component Container */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-4">
+          <div className="bg-linear-to-t from-sky-500 to-indigo-500 p-6 rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-white mb-4">
               Analytics & Metrics
             </h3>
             <Analytics users={filteredUsers} />
@@ -203,10 +225,10 @@ const UserCard = memo(
     return (
       <div
         onClick={() => onSelect(user)}
-        className={`p-3 border rounded-lg cursor-pointer transition ${
+        className={`p-3 rounded-xl cursor-pointer border transition-all duration-200 backdrop-blur-xs ${
           isSelected
-          ? "bg-blue-50 border-blue-500"
-          : "hover:bg-gray-100"
+          ? "bg-slate-400 text-white border-black shadow-md scale-[1.01]"
+          : "bg-white/40 border-white/20 hover:bg-white/70 hover:shadow-sm"
         }`}
       >
         <p className="text-sm sm:text-base font-medium">{user.name}</p>
@@ -234,18 +256,18 @@ const Analytics = memo(({ users }: { users: User[] }) => {
   }, [users]);
 
   return (
-    <div className="border rounded-2xl p-5 shadow-sm">
-      <h2 className="text-2xl font-bold mb-5">Analytics</h2>
+    <div className="border rounded-2xl p-5 shadow-sm bg-[#0f3d59]/40 border-black/10">
+      <h2 className="text-2xl font-bold mb-5 text-white">Analytics</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="border border-blue-100 bg-blue-50/40 rounded-xl p-4">
-          <p className="text-sm text-gray-500">Total Users</p>
+        <div className="border border-blue-100 bg-[#E2E8F0] rounded-xl p-4 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:scale-[1.02] cursor-pointer">
+          <p className="text-sm text-[#1b4d4a]">Total Users</p>
 
           <p className="text-2xl font-bold mt-2">{users.length}</p>
         </div>
 
-        <div className="border border-emerald-100 bg-emerald-50/40 rounded-xl p-4">
-          <p className="text-sm text-gray-500">Total Age Sum</p>
+        <div className="border border-emerald-100 bg-linear-to-br from-[#ffcd94] to-[#ea7349] rounded-xl p-4 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:scale-[1.02] cursor-pointer">
+          <p className="text-sm text-[#5c1d06]">Total Age Sum</p>
 
           <p className="text-2xl font-bold mt-2">{totalAge}</p>
         </div>
