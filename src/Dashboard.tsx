@@ -72,16 +72,14 @@ export default function Dashboard() {
    * Stable function reference to reduce unnecessary rerenders.
    */
   const handleSelectUser = useCallback((user: User) => {
-    setSelectedUser((prev) => prev?.id === user.id ? null : user);
+    setSelectedUser((prev) => (prev?.id === user.id ? null : user));
   }, []);
 
   return (
     <div className="min-h-screen bg-[#eae6f3] text-gray-800 font-sans antialiased p-4 md:p-8">
-      {/* Main Container: Sets up a 3-column grid structure on medium screens and up */}
+      {/* Main Container */}
       <div className="mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-        {/* =========================================================
-            SIDEBAR: Users List (Takes 1 column width on md+)
-           ========================================================= */}
+        {/* SIDEBAR: Users List */}
         <aside className="md:col-span-1 bg-[#0f3d59]/40 p-5 rounded-2xl shadow-sm border border-gray-200 flex flex-col h-112.5 md:h-[calc(100vh-4rem)] md:sticky md:top-8">
           <h2 className="text-xl font-bold mb-4 text-gray-900 tracking-tight">
             Users
@@ -96,8 +94,18 @@ export default function Dashboard() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            <svg
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
             </svg>
           </div>
 
@@ -126,9 +134,7 @@ export default function Dashboard() {
           </div>
         </aside>
 
-        {/* =========================================================
-            MAIN CONTENT: Dashboard & Cards (Takes 2 columns width on md+)
-           ========================================================= */}
+        {/* MAIN CONTENT: Dashboard & Cards */}
         <main className="md:col-span-2 space-y-6">
           {/* Dashboard Header Banner */}
           <div className=" p-6 rounded-2xl shadow-sm border border-gray-200 flex items-center justify-between">
@@ -167,15 +173,12 @@ export default function Dashboard() {
               </h3>
 
               {selectedUser ? (
-                /* Clean Gray Box Highlighted Area for Selected User Profile */
                 <div className="bg-[#decff5] border-[#4c3a6f] text-[#4c3a6f] p-4 rounded-xl space-y-3 transition-all duration-300">
                   <div className="flex items-center gap-3 text-sm">
                     <span className="font-semibold  w-14 uppercase text-[11px] tracking-wider">
                       Name:
                     </span>
-                    <span className="font-semibold ">
-                      {selectedUser.name}
-                    </span>
+                    <span className="font-semibold ">{selectedUser.name}</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
                     <span className="font-semibold  w-14 uppercase text-[11px] tracking-wider">
@@ -189,14 +192,27 @@ export default function Dashboard() {
               ) : (
                 <div className="flex flex-col items-center justify-center py-8 text-center">
                   <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
-                    <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    <svg
+                      className="w-6 h-6 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
                     </svg>
                   </div>
-                  <p className="text-sm text-[#2b1f45]">No active user selection</p>
-                  <p className="text-xs text-[#65538e] mt-1">Click any user to view details</p>
+                  <p className="text-sm text-[#2b1f45]">
+                    No active user selection
+                  </p>
+                  <p className="text-xs text-[#65538e] mt-1">
+                    Click any user to view details
+                  </p>
                 </div>
-
               )}
             </section>
           </div>
@@ -221,14 +237,22 @@ export default function Dashboard() {
  * when parent rerenders.
  */
 const UserCard = memo(
-  ({ user, onSelect, isSelected }: { user: User; onSelect: (user: User) => void; isSelected : boolean; }) => {
+  ({
+    user,
+    onSelect,
+    isSelected,
+  }: {
+    user: User;
+    onSelect: (user: User) => void;
+    isSelected: boolean;
+  }) => {
     return (
       <div
         onClick={() => onSelect(user)}
         className={`p-3 rounded-xl cursor-pointer border transition-all duration-200 backdrop-blur-xs ${
           isSelected
-          ? "bg-slate-400 text-white border-black shadow-md scale-[1.01]"
-          : "bg-white/40 border-white/20 hover:bg-white/70 hover:shadow-sm"
+            ? "bg-slate-400 text-white border-black shadow-md scale-[1.01]"
+            : "bg-white/40 border-white/20 hover:bg-white/70 hover:shadow-sm"
         }`}
       >
         <p className="text-sm sm:text-base font-medium">{user.name}</p>
