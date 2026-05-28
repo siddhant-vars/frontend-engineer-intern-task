@@ -146,7 +146,7 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
             {/* Counter Card Component */}
             <section className="sm:col-span-2 bg-linear-to-br from-[#ffd3b6] to-[#ffa384] p-6 rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center justify-center text-center group hover:shadow-md transition-shadow duration-300">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-black-400">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-black">
                 Counter
               </h3>
               <p className="text-6xl font-black bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent my-4">
